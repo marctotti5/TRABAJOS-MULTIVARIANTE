@@ -1,0 +1,413 @@
+---
+title: "Untitled"
+author: "Marc Pastor"
+date: "3/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Consideraciones Generales}
+Modelizar es:
+\begin{itemize}[topsep=0ex]
+\item Describir la relación entre variables
+\item Describir como se generan los datos
+\end{itemize}
+
+\subsection{Relación entre variables}
+Supongamos que queremos estudiar la relación entre los años de experiencia y el sueldo: en general personas
+con más años de experiencia cobran más.
+
+\begin{itemize}[topsep=0ex]
+\item Medimos el sueldo neto mensual en euros
+\item Medimos el número de años de experiencia desde la graduación
+\item En el modelo la variabilidad total se compone de:
+	\begin{itemize}[topsep=0ex]
+	\item Un componente \textbf{sistemático}: cómo varía el sueldo con los años de experiencia
+	\item Un componente \textbf{estocástico}: la parte que es debido a otras causas y nos podemos explicar con los 		   datos que tenemos
+	\end{itemize}
+\end{itemize}
+
+Un \textbf{Modelo} es una manera de resumir la información contenida en los datos en téminos de un efecto sistemático + una cantidad que no se puede explicar (variabilidad aleatoria)
+
+En el caso de un modelo \textbf{lineal}, la linealidad es un supuesto sobre la naturaleza de la relación entre sueldo y educación:
+
+\begin{itemize}[topsep=0ex]
+\item Describe cuanto cambia el sueldo en media por cada unidad que aumenta la experiencia:
+$$y_i = X_i \beta + \epsilon_i $$
+\item Describe cuanta variabilidad en en el sueldo no queda explicada por la experiencia
+\end{itemize}
+
+El componente \textbf{sistemático} es la media de dado un valor de $X$:
+$$
+\mu = E[y|X] = X \beta
+$$
+
+El componente \textbf{estocástico} sería lo que queda sin explicar:
+$$
+\epsilon_i = y_i - X_i \beta
+$$
+
+\newpage
+\subsection{Componentes del modelo}
+La parte sistemática del modelo define la relación entre $X$ e $Y$ (entre experiencia y sueldo): mira a la variabilidad en experiencia para explicar la variabilidad en sueldo.
+
+El componente estocástico define la distribución de $Y$:
+\begin{itemize}[topsep=0ex]
+\item Describe la variabilidad en sueldo
+\item Cuando no hay variables predictoras (explicativas) toda la variabilidad es estocástica
+\item Si no conozco nada de la experiencia, toda la variabilidad en sueldo es estocástica
+\item Este componente queda especificado cuando hacemos supuestos sobre el proceso estadístico que genera los datos
+\item En el caso de modelos lineales asumimos normalidad
+\end{itemize}
+
+\begin{center}[h]
+\includegraphics[scale = 0.5]{captura1}
+\includegraphics[scale = 0.5]{captura2}
+\end{center}
+
+\clearpage
+\subsection{¿Qué pasa cuando mi variable respuesta es $0/1$?}
+\begin{itemize}[topsep=0ex]
+\item Muchas respuesta a sucesos políticos o sociales toman la forma sí/no
+\begin{itemize}[topsep=0ex]
+\item ¿Ha votado un ciudadano?
+\item ¿Votó por el partico en el poder? ¿a la oposición?
+\item ¿Está en paro una persona?
+\end{itemize}
+\item En estos casos:
+\begin{itemize}[topsep=0ex]
+\item ¿Qué concepto quiero modelizar?
+\item ¿Cómo lo relaciono con otras variables (independientes)?
+\end{itemize}
+\end{itemize}
+
+Considera el caso de un votante que tienen que decidir entre votar por el partido en el poder o por el líder
+de la oposición:
+$$ y = \left\{
+\begin{array}{ll}
+      1 \quad  \text{si elige al partido en el poder}\\
+      0 \quad \text{si elige al partido de la oposición}\\
+\end{array} 
+\right.$$
+
+Queremos modelizar $y$ como una función lineal de la situación económica del individuo en
+comparación con la del año anterior.
+
+Cuanto más mejoren sus finanzas (mayor valor de $X$) más probable será que vote al partido que está
+en el poder.
+$$
+y_i = X_i \beta + \epsilon_i
+$$
+
+Hemos recogido datos de 1000 ciudadanos:
+\begin{center}
+\includegraphics[scale = 0.8]{captura3}
+\end{center}
+
+La variable explicativa tienen un gran impacto en la intención de voto.
+
+\newpage
+\begin{center}
+\includegraphics[scale = 0.8]{captura4}
+\end{center}
+
+Hemos ajustado la recta de regresión:
+$$
+\hat{y} = 0.45 + 0.071X
+$$
+\color{red}
+\textbf{¿Cuál es el problema?}
+\color{black}
+
+Dado que en un modelo de regresión lineal estamos modelizando $E[y|X]$, si la respuesta es $0/1$ ¿qué valor
+tomaría?
+$$
+E[y|X] = P(y = 1) = p \quad \text{probabilidad de votar al partido en el poder}
+$$
+
+El modelo se interpretaría de forma análoga: por cada euro que incrementa $X$, $\beta$ me diría cuánto aumenta la probabilidad de votar al partido en el poder.
+
+\color{red}
+\textbf{¿Cuál sigue siendo el problema?}
+\color{black}
+
+El problema es que según el modelo de regresión que hemos ajustado, la variable respuesta $p$, puede tomar valores negativos, lo cuál no tiene sentido y estaría incumpliendo los axiomas de Kolmogorov.
+
+Otro problema añadido:
+\begin{itemize}[topsep=0ex]
+\item La relación lineal implica que $p$ cambia a una tasa constante, independientemente del valor inicial del
+predictor lineal.
+\item Esto casi nunca es cierto
+\end{itemize}
+
+\textbf{Ejemplo}: María quiere comprar un producto que cuesta $5$ euros
+\begin{itemize}[topsep=0ex]
+\item Un factor que influye en la decisión de María son sus recursos económicos ($X$)
+\item Le damos euro, es decir, aumentamos $X$ en una unidad
+\item ¿Cómo cambia la probabilidad de que María compre el producto?
+\end{itemize}
+
+\begin{itemize}[topsep = 0ex]
+\item Si María tiene euros: No hay mucha mejora ya que le fantan $4$ euros $\implies$ la probabilidad de que compre el producto no cambiará mucho
+\item Si María es multimillonaria: Si no ha comparado el producto no es por dinero, puede que no le interese. De nuevo el cambio en la probabilidad de compra cuando $X$ aumenta en una unidad será pequeño.
+\item Si María tiene 4 euros:
+Darle euro cambia su estado, de no poder a poder comprarlo un aumento en $1$ unidad en $X$ tiene un gran impacto en la probabilidad de compra
+\end{itemize}
+
+\clearpage
+\section{La forma funcional}
+La forma funcional describe como $X$ se relaciona con $y$.
+
+Cuando modelizamos, por ejemplo la probabilidad de cambio, una forma funcional \textbf{sigmoide} es más apropiada.
+
+\begin{center}
+\includegraphics[scale = 0.8]{captura5}
+\end{center}
+
+Especificar la correcta forma funcional es un paso fundamental en la modelización estadística
+
+\begin{itemize}[topsep = 0ex]
+\item Necesitamos transformar $E[y|X]$ de tal forma que se pueda relacional de forma lineal con $X$
+\item Hacemos esto mediante una función matemática llama la función \textbf{link} o \textbf{enlace}
+\item Esta función transforma $E[y|X]$ en una cantidad llamada el \textbf{predictor lineal} que no es otra cosa más que la parte sistemática del modelo
+\item Una vez transformada la podemos modelizar como un modelo de regresión usual.
+\end{itemize}
+
+\clearpage
+\subsection{Componentes de un modelo GLM}
+La formulación de un modelo GLM se especifica en 3 pasos:
+
+\begin{enumerate}
+\item Especificar la distribución de la variable dependiente:
+\begin{itemize}[topsep = 0ex]
+\item Esta es nuestra hipótesis sobre cómo se han generado los datos
+\item Este es el componente estocástico del modelo
+\end{itemize}
+
+\item Especificar la función enlace (link)
+\begin{itemize}[topsep = 0ex]
+\item Linearizamos la media de y ($\mu$) transformándola en el predictor lineal ($\eta$)
+\item Siempre ha de tener función inversa
+$$
+g(\mu) = \eta \implies \mu = g^{-1}(\eta)
+$$
+\end{itemize}
+
+\item Especificar el predictor lineal
+\begin{itemize}
+\item Se hace de forma similar a la regresión lineal
+\item Este es el componente sistemático del modelo
+$$
+\eta = x_1 \beta_1 + x_2 \beta_2 + \dots + x_k \beta_k = X\beta
+$$
+\end{itemize}
+\end{enumerate}
+
+\textbf{¿Puedo usar un GLM para cualquier tipo de variable?: NO}
+Solamente se puede usar un GLM si la variable pertenece a la \textbf{famila exponencial de distribuciones}.
+
+\section{Familia exponencial de distribuciones}
+Un concepto importante en el ámbito de los GLM es la \textbf{familia exponencial de distribuciones}. La familia exponencial se origina con Fisher (1934).
+Los miembros de la familia exponencial de distribuciones tienen función de densidad (o de probabilidad, en el caso discreto), que puede expresarse de la forma:
+$$
+f(y; \theta, \phi) = \exp \left \{\frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi) \right \}
+$$
+
+donde, respectivamente $a(.)$, $b(.)$ y $c$ son funciones específicas para cada variable. El parámetro $\theta$ se denomina \textit{parámetro canónico de localización} y $\phi$ es un \textit{parámetro de dispersión}. 
+
+Las distribuciones Binomial, Poisson y Normal (entre otras) son miembros de la familia exponencial. El caso más importante es el de la distribución normal, cuya función de densidad es:
+\begin{align*}
+f(y; \mu, \sigma) & = \frac{1}{\sqrt{2 \pi} \sigma} \exp \left \{ - \frac{(y - \mu)^2}{2 \sigma^2} \right \}  \quad \text{que podemos reescribir como} \\ & = \exp \left \{\frac{(y \mu - \mu^2/2)}{\sigma^2} - \frac{1}{2}[y^2/\sigma^2 + \ln(2\pi \sigma^2]  \right \}
+\end{align*}
+
+Es decir, $\theta = \mu$, $b(\theta) = \mu^2 / 2$, $a(\phi) = \phi$, $\phi = \sigma^2$ y 
+$$
+c(y, \phi) = - \frac{1}{2} \left [\frac{y^2}{\sigma^2} + \ln(2\pi \sigma^2) \right]
+$$
+
+\textbf{Variables en la familia exponencial}
+\begin{itemize}[topsep = 0ex]
+\item Normal
+\item Binomial
+\item Poisson
+\item Exponencial
+\item Gamma
+\item \dots
+\end{itemize}
+
+\textbf{Variables NO en la familia exponencial}
+\begin{itemize}[topsep = 0ex]
+\item F
+\item Cauchy
+\item Hipergeométrica
+\item \dots
+\end{itemize}
+
+\subsection{Esperanza y Varianza de la familia exponencial}
+Sea $Y$ una variable con distribución perteneciente a la familia exponencial, se puede probar que:
+\begin{align*}
+E[Y] = \mu = b'(\theta) \label{eq:3.5} \tag{3.5} \\
+Var[Y] = b''(\theta) a(\phi) 
+\end{align*}
+
+
+\newpage
+\subsubsection{Demostración}
+Supongamos que $Y$ es continua (en el caso discreto, sería parecido pero con series). Sabemos que:
+$$
+\int_{\mathbb{R}} f(y; \theta, \phi) dy = 1
+$$
+
+Sin entrar en temas técnicos, supongamos que el intercambio entre integral y derivada está permitido, entonces, derivando a ambos lados de la igualdad:
+$$
+\frac{\partial}{\partial \theta} \int_{\mathbb{R}} f(y; \theta, \phi) dy  = 
+\int_{\mathbb{R}} \frac{\partial}{\partial \theta} f(y; \theta, \phi) dy = 0
+$$
+
+Consideremos el logaritmo de la función de densidad:
+$$
+l(y; \theta, \phi) = \ln(f(y; \theta, \phi)) = \frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi)
+$$
+Tenemos que:
+$$
+\frac{\partial l(y; \theta, \phi)}{\partial \theta} = \frac{\frac{\partial f(y; \theta, \phi)}{\partial \theta}}{f(y; \theta, \phi)} = \frac{f'(\theta)}{f(\theta)} = \ell'(\theta) = \frac{y - b'(\theta)}{a(\phi)}
+$$
+y de manera similar:
+$$
+\frac{\partial^2 l(y; \theta, \phi)}{\partial \theta^2} = \frac{f''(\theta) \cdot \theta - f'(\theta) \cdot (f'(\theta))^2}{f(\theta)^2} = \frac{f''(\theta)}{f(\theta)} - \left (\frac{f'(\theta)}{f(\theta)} \right)^2 = l''(\theta)
+$$
+
+Entonces calculamos la esperanza de $l'(\theta)$:
+\begin{align*}
+E[l'(\theta)] & = E\left [\frac{\partial l(y; \theta, \phi)}{\partial \theta} \right] \\ & = \int_{\mathbb{R}} \frac{\partial l(y; \theta, \phi)}{\partial \theta} f(y; \theta, \phi) dy \\ & = 
+\int_{\mathbb{R}} \frac{f'(\theta)}{f(\theta)} f(y; \theta, \phi) dy
+\\ & = \int_{\mathbb{R}} \frac{\frac{\partial  f(y; \theta, \phi)}{\partial \theta}}{ f(y; \theta, \phi)}  f(y; \theta, \phi) dy \\
+& = \int_{\mathbb{R}} \frac{\partial  f(y; \theta, \phi)}{\partial \theta} dy = 0 
+\end{align*}
+
+Entonces, se cumple que:
+\begin{align*}
+E[l'(\theta)] = E\left[\frac{y - b'(\theta)}{a(\phi)}\right] = 0 & \iff \\
+\frac{E[y] - b'(\theta)}{a(\phi)} = 0 & \iff \\
+E[y] = b'(\theta) &
+\end{align*}
+
+\clearpage
+y para la varianza:
+\begin{align*}
+E[l''(\theta)] & = E \left [\frac{f''(\theta)}{f(\theta)} - \left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = E \left [\frac{f''(\theta)}{f(\theta)}\right] - E \left [\left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = \int_{\mathbb{R}} \frac{\frac{\partial^2 f(y; \theta, \phi)}{\partial \theta^2}}{f(y; \theta, \phi)} f(y; \theta, \phi) dy - E \left [\left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = \int_{\mathbb{R}} \frac{\frac{\partial^2 f(y; \theta, \phi)}{\partial \theta^2}}{\cancel{f(y; \theta, \phi)}} \cancel{f(y; \theta, \phi)} dy - E \left [\left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = \underbrace{\int_{\mathbb{R}} \frac{\partial^2 f(y; \theta, \phi)}{\partial \theta^2} dy}_{= 0} - E \left [\left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = \underbrace{E \left [\frac{f'(\theta)}{f(\theta)}\right]^2}_{= 0} - E \left [\left (\frac{f'(\theta)}{f(\theta)} \right)^2 \right ] \\
+& = - Var \left[\frac{f'(\theta)}{f(\theta)} \right]
+\end{align*}
+
+Calculando llegamos a que:
+$$
+l''(\theta) = \frac{\partial }{\partial \theta}\left (\frac{y - b'(\theta)}{a(\phi)} \right) = - \frac{b''(\theta)}{a(\phi)}
+$$
+
+Entonces, como $ - \frac{b''(\theta)}{a(\phi)}$ es constante, entonces:
+$$
+E[l''(\theta)] = E \left [- \frac{b''(\theta)}{a(\phi)} \right] = - \frac{b''(\theta)}{a(\phi)}
+$$
+
+Entonces, tenemos que:
+\begin{align*}
+E[l''(\theta)] = - \frac{b''(\theta)}{a(\phi)} & = - Var \left[\frac{f'(\theta)}{f(\theta)} \right] \iff \\
+- \frac{b''(\theta)}{a(\phi)} = -Var[l'(\theta)] & = - \frac{Var[y]}{a(\phi)^2} \iff \\
+- \frac{b''(\theta)}{a(\phi)} & = - \frac{Var[y]}{a(\phi)^2} \iff \\
+Var[y] & = b''(\theta) a(\phi) \\
+& \quad \blacksquare 
+\end{align*}
+
+\subsection{La familia exponencial y estimación por máxima verosimilitud}
+Para obtener estimaciones del vector de parámetros desconocido $\theta$, dada una muestra, podemos usar máxima verosimilitud. Es más conveniente trabajar con el logaritmo de la función de verosimilitud
+
+\clearpage
+\section{Componentes de un modelo lineal generalizado}
+Empecemos con el modelo de regresión lineal estándar. Sea el vector de $n$ observaciones $\boldsymbol{y} = (y_1, \dots, y_n)'$ una realización del vector aleatorio $\boldsymbol{Y} = (Y_1, \dots, Y_n)'$, cuyos componentes son $n$ variables independientes distribuidas con vector de medias $\boldsymbol{\mu} = (\mu_1, \dots, \mu_n)$. 
+$$
+\mathbf{y} = \boldsymbol{X \beta} + \boldsymbol{\epsilon}, \quad \boldsymbol{\epsilon} \sim N(\boldsymbol{0}, \sigma^2 \boldsymbol{I}), \quad E[\boldsymbol{y}] = \boldsymbol{\mu} = \boldsymbol{X \beta}
+$$
+
+donde $\boldsymbol{X \beta}$ es una combinación lineal de variables predictoras denominada \emph{predictor lineal} (representada por $\boldsymbol{\eta}$), en este caso la media $\boldsymbol{\mu}$ está directamente enlazada con el predictor lineal, es decir en este caso $\boldsymbol{\mu} = \boldsymbol{\eta}$. Para este modelo podemos ver fácilmente dos componentes del modelo: la distribución de probabilidad de la respuesta y la estructura lineal. La generalización del modelo lineal tiene los siguientes componentes:
+
+\begin{enumerate}[topsep = 0ex]
+\item \textbf{Componente estocástico}: $\mathbf{y}$ es un vector aleatorio de componentes i.i.d que sigue una distribución de la familia exponencial, con media $\boldsymbol{\mu}$.
+\begin{itemize}[topsep = 0ex]
+\item Esta es nuestra hipótesis sobre cómo se han generado los datos
+\item Este es el componente estocástico del modelo
+\end{itemize}
+\item \textbf{Componente sistemático}: es el predictor lineal $\boldsymbol{\eta} = \boldsymbol{X \beta}$. Esto describe como cambia la ubicación de la de la distribución de la respuesta con las variables explicativas.
+\item \textbf{Función \emph{link} o enlace}: Es una función monótona diferenciable que enlaza la media y el predictor lineal:
+\begin{itemize}[topsep = 0ex]
+\item Linearizamos la media de $\boldsymbol{y}$ ($\boldsymbol{\mu}$) transformándola en el predictor lineal ($\boldsymbol{\eta}$)
+\item Siempre ha de tener función inversa $g^{-1}(\boldsymbol{\eta})$
+$$
+\boldsymbol{\eta} = g(\boldsymbol{\mu})  \implies E[\boldsymbol{y}] = \boldsymbol{\mu} = g^{-1}(\boldsymbol{\eta})
+$$
+En el caso de la regresión lineal $\boldsymbol{\mu} = \boldsymbol{\eta}$, y por ello la función \emph{link} es la identidad ($1$).
+
+Hay muchas maneras de escoger la función enlace. El \textbf{\emph{link} canónico} es una función que transforma la media al parámetro de localización canónico $\theta$:
+$$
+\boldsymbol{\eta} = g(\boldsymbol{\mu}) = \theta \implies \text{$g$ es un \emph{link} canónico}
+$$
+\end{itemize}
+\end{enumerate}
+
+\clearpage
+La siguiente tabla muestra los \emph{links} canónicos para las distribuciones más comunes usadas en GLM's:
+\begin{center}
+\includegraphics[scale = 0.6]{captura6}
+\end{center}
+
+Podemos entender la selección del \emph{link} como una elección de una transformación de la respuesta. Por otro lado, la función enlace es una transformación de la \emph{media poblacional}, no de los datos. Más detalles sobre las funciones enlace pueden encontrarse en McCullagh and Nelder (1989, chap. 2)
+
+\textbf{¿Qué relación tiene $\theta$ con las variables explicativas?}
+$$
+\boldsymbol{\eta} = \boldsymbol{X \beta} = g(\boldsymbol{\mu}) = g(b'(\theta)).
+$$
+\begin{center}
+\includegraphics[scale = 0.6]{captura7}
+\end{center}
+
+De todas las posibles funciones enlace hay una que tiene buenas propiedades estadísticas y es el \textbf{\emph{link} canónico}:
+$$
+g(\boldsymbol{\mu}) = \theta = \boldsymbol{X \beta}
+$$
+
+\subsection{Demostración de que la distribución normal pertenece a la familia exponencial}
+Sea $Y \sim N(\mu, \sigma^2)$, la función de densidad es:
+$$
+f(y; \mu, \sigma) = \frac{1}{\sqrt{2 \pi} \sigma} \exp \left \{ - \frac{(y - \mu)^2}{2 \sigma^2} \right \} 
+$$
+Tomamos el logaritmo de la función de densidad:
+$$
+\ln(f(y; \mu, \sigma)) = - \frac{\ln(2\pi \sigma^2)}{2} - \frac{(y-\mu)^2}{2 \sigma^2}
+$$
+
+Tomamos la exponencial del logaritmo, con lo cuál obtenemos la función de densidad reescrita:
+\begin{align*}
+f(y; \mu, \sigma) & = \exp \left \{ \ln(f(y; \mu, \sigma))   \right \} \\
+& = \exp \left \{ - \frac{\ln(2\pi \sigma^2)}{2} - \frac{(y-\mu)^2}{2 \sigma^2}  \right \} \\
+& = \exp \left \{ \frac{-y^2 -\mu^2 + 2y \mu}{2\sigma^2} - \frac{\ln(2\pi \sigma^2)}{2}  \right \} \\
+& = \exp \left \{ \frac{-\mu^2 +2y \mu}{2\sigma^2} - \frac{\ln(2\pi \sigma^2)}{2} - \frac{y^2}{2 \sigma^2}  \right \} \\
+& = \exp \left \{ \frac{y \mu - \mu^2/2}{\sigma^2} - \frac{\ln(2\pi \sigma^2)}{2} - \frac{y^2}{2 \sigma^2}  \right \} \\
+& = f(y; \theta, \phi) \\ 
+& = \exp \left \{\frac{y\theta - b(\theta)}{a(\phi)} + c(y, \phi) \right \}
+\end{align*}
+
+donde:
+\begin{align*}
+\theta & = \mu \\
+b(\theta) & = \frac{\mu^2}{2} \\
+\phi & = \sigma \\
+a(\phi) & = \sigma^2 \\
+c(y, \phi) & = - \frac{\ln(2\pi \sigma^2)}{2} - \frac{y^2}{2 \sigma^2} 
+\end{align*}

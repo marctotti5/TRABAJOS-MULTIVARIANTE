@@ -1,0 +1,43 @@
+---
+title: "prueba_simulacion_deviance"
+author: "Marc Pastor"
+date: "3/8/2022"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+```{r}
+set.seed(7*11*13)  # My public seed
+X <- data.frame(x1=rnorm(200, 20, sd=3),
+                x2=factor(rep(1:3, c(100, 50, 50))),
+                y=rbinom(200, 1, 0.25))
+
+N <- 10000 # Simulating the null distribution
+
+sim_dev <- function(N) {
+    res <- numeric(N)
+    for (i in seq_along(res)) {
+        X$y <- rbinom(200, 1, 0.25)
+        mod <- glm(y  ~ x1+x2, data=X, family=binomial)
+        res[i] <- with(mod,  null.deviance-deviance)
+    }
+    res
+}
+
+deviance <- sim_dev(N)
+
+mean(deviance); var(deviance)
+ 3.016633
+ 6.090653  # Rather close to theoretical values 3, 6
+
+hist(deviance, prob=TRUE, breaks="FD")
+plot( function(x) dchisq(x, df=3), col="red", add=TRUE, from=0, to=22) 
+qqplot(qchisq(ppoints(N), df=3), deviance)
+qqline(deviance, distribution=function(x)qchisq(x, df=3))
+title("qqplot against chisquare distribution (df=3)") 
+```
+

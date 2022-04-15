@@ -1,0 +1,6 @@
+instrucciones:
+1. hacer jupyter notebook
+2. descargar como markdown
+3. abrir markdown en R
+4. meter en el preamble la portada, etc
+4. renderizar en pdf
