@@ -50,7 +50,7 @@ for i=1:p
 end
 % ----------------------------------------------------------
 % Componentes principales a partir de la matriz de correlaciones.
-% Ordenaciín de los valores propios segun la variabilidad
+% Ordenación de los valores propios segun la variabilidad
 % explicada (de más a menos). D2 es un vector fila.
 % Las columnas de T2 son los vectores propios ordenados.
 %

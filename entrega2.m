@@ -140,16 +140,22 @@ contraste_lambda_wilks(X_analisis, variables_categoricas, "property_type", nombr
 contraste_lambda_wilks(X_analisis, variables_categoricas, "room_type", nombres_variables_continuas_interes, true, 0.05)
 contraste_lambda_wilks(X_analisis, variables_categoricas, "neighbourhood_group_cleansed", nombres_variables_continuas_interes, true, 0.05)
 
-% PCA
-% OJO: HE MODIFICADO LA FUNCIÓN DE 
-[T1,Y1,acum1,T2,Y2,acum2]=comp2(X_analisis) % supuestamente deberíamos escoger
+%% PCA
+% Resumen de los datos
+m_analisis = mean(X_analisis);
+S_analisis = cov(X_analisis, 1);
+R_analisis = corr(X_analisis);
+plot_map(R_analisis, char(nombres_variables_continuas_interes.'))
 
-[n,p]=size(X_analisis);
- % AÑADIDO POR MI
-% Vector de etiquetas para los individuos.
-lab = {0}
-for i=1:n 
-  lab{i, :}= sprintf('%3g',i);
-end
+% OJO: HE MODIFICADO LA FUNCIÓN COMP2
+[T1,Y1,acum1,T2, Y2,acum2] = comp2(X_analisis); % supuestamente deberíamos escoger
+% utilizaremos la matriz de correlaciones
+
+[autovectores_pca, autovalores_pca] = eigsort(R_analisis) % comprobamos el cuarto autovalor más grande, para ver si la cuarta componente entra o no
+% el cuarto autovalor es 0.7148, por lo que por el criterio del Kaiser, la
+% cuarta componente también entraría
+
+
+
 
 
