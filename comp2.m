@@ -5,23 +5,25 @@
 %
 % Devuelve :
 %   T1 componentes principales a partir de la matriz S
+%   Matriz diagonal de autovalores de S
 %   Y1 representación de los datos
 %   acum1 porcentajes acumulados
 %   T2 componentes principales a partir de la matriz R
+%   D2 matriz de autovalores de la matriz R
 %   Y2 representación de los datos
 %   acum2 porcentajes acumulados
 % 
 % Salidas gráficas: Representación en componentes principales (dim. 2), scree-plot
 %                   con el criterio de Kaisser y la modificación del criterio de Kaisser.
 %
-function [T1,Y1,acum1,T2,Y2,acum2]=comp2(X)
+function [T1,D1,Y1,acum1,T2,D2,Y2,acum2]=comp2(X)
 [n,p]=size(X);
  
 % AÑADIDO POR MI
 % Vector de etiquetas para los individuos.
 % Convierto lab en un cell, porque sino no puedo almacenar los nombres de
 % etiquetas
-lab = {0}
+lab = {0};
 for i=1:n 
   lab{i, :}= sprintf('%3g',i);
 end

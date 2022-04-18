@@ -148,14 +148,32 @@ R_analisis = corr(X_analisis);
 plot_map(R_analisis, char(nombres_variables_continuas_interes.'))
 
 % OJO: HE MODIFICADO LA FUNCIÓN COMP2
-[T1,Y1,acum1,T2, Y2,acum2] = comp2(X_analisis); % supuestamente deberíamos escoger
+[T1,D1,Y1,acum1,T2,D2,Y2,acum2]=comp2(X_analisis); % supuestamente deberíamos escoger
 % utilizaremos la matriz de correlaciones
 
-[autovectores_pca, autovalores_pca] = eigsort(R_analisis) % comprobamos el cuarto autovalor más grande, para ver si la cuarta componente entra o no
+D2 % comprobamos el cuarto autovalor más grande, para ver si la cuarta componente entra o no
 % el cuarto autovalor es 0.7148, por lo que por el criterio del Kaiser, la
 % cuarta componente también entraría
 
+% Gráfico de porcentaje de variabilidad explicada
+p = size(X_analisis, 2);
+index = 1:p;
+figure
+bar(index, acum2);
+xlabel('Número de componentes principales', 'Fontsize', 18);
+ylabel('Porcentaje (%)', 'Fontsize', 18);
+title('Porcentaje de variabilidad explicada \newline por número de componentes principales', 'fontsize', 18);
+text(index,acum2,num2str(acum2','%0.2f'),...
+    'HorizontalAlignment','center',...
+    'VerticalAlignment','bottom');
 
+% Gráfico de correlaciones entre componentes principales y variables
+% originales
+% Creamos una matriz del mismo tamaño que T2
+correlaciones_Y_X = zeros(size(T2));
+for i = 1:size(D2, 1)
+    correlaciones_Y_X(:, i) = sqrt(D2(i, :)) * T2(:, i);
+end
 
-
-
+% Nos fijaremos solamente en las 4 primeras componentes
+correlaciones_Y_X(:, 1:4)
