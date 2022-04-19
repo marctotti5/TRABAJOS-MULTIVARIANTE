@@ -775,7 +775,7 @@ Para ello es necesario que la variable de interés sea positiva, es decir: $y > 
 
 $$ y(\boldsymbol{\lambda}) = \left\{
 \begin{array}{ll}
-      \frac{(y + \lambda_2)^{\lambda_2} - 1}{\lambda} \quad  \text{si $\lambda_1 \ne 0$}\\
+      \frac{(y + \lambda_2)^{\lambda_1} - 1}{\lambda} \quad  \text{si $\lambda_1 \ne 0$}\\
       \log (y + \lambda_2) \quad \text{si $\lambda_1 = 0$}\\
 \end{array} 
 \right.$$
