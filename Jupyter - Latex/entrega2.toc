@@ -1,0 +1,18 @@
+\contentsline {section}{\numberline {1}Conjunto de Datos}{3}{section.1}%
+\contentsline {section}{\numberline {2}Limpieza de Datos}{3}{section.2}%
+\contentsline {section}{\numberline {3}Lectura de Datos}{3}{section.3}%
+\contentsline {section}{\numberline {4}Variables categóricas}{5}{section.4}%
+\contentsline {section}{\numberline {5}Variables numéricas}{5}{section.5}%
+\contentsline {section}{\numberline {6}Mapas}{12}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Mapa de precios por barrios}{12}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Mapa del tipo de propiedades ofertadas}{13}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Transformaciones de Box-Cox}{13}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Teoría}{13}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Aplicación}{15}{subsubsection.6.3.2}%
+\contentsline {section}{\numberline {7}Contrastes \(\mathbf {T^2}\) de Hotelling}{20}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Conceptos teóricos (apuntes de Aurea Grané)}{20}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Aplicación}{20}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Contrastes de hipótesis de lambda de Wilks}{22}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Conceptos teóricos (apuntes de Aurea Grané)}{22}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Aplicación}{24}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Análisis de Componentes Principales (PCA)}{28}{section.9}%
